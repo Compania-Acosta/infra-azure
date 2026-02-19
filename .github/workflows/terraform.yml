@@ -48,7 +48,7 @@ jobs:
           terraform_version: 1.9.5
 
       - name: Terraform Init
-        run: terraform init
+        run: terraform init -reconfigure
         env:
           ARM_CLIENT_ID: ${{ fromJson(secrets.AZURE_CREDENTIALS).clientId }}
           ARM_CLIENT_SECRET: ${{ fromJson(secrets.AZURE_CREDENTIALS).clientSecret }}
@@ -62,8 +62,8 @@ jobs:
               terraform plan
               ;;
             "plan+apply")
-              terraform plan
-              terraform apply -auto-approve
+              terraform plan -out=tfplan
+              terraform apply -auto-approve -out=tfplan
               ;;
             "destroy")
               terraform destroy -auto-approve
